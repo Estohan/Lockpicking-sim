@@ -9,6 +9,13 @@
 /[Bb]uilds/
 /[Ll]ogs/
 /[Mm]emoryCaptures/
+/Lockpicking/[Ll]ibrary/
+/Lockpicking/[Tt]emp/
+/Lockpicking/[Oo]bj/
+/Lockpicking/[Bb]uild/
+/Lockpicking/[Bb]uilds/
+/Lockpicking/[Ll]ogs/
+/Lockpicking/[Mm]emoryCaptures/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta

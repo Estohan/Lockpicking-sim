@@ -1,0 +1,94 @@
+{
+    "name": "InputManager",
+    "maps": [
+        {
+            "name": "Lockpicking",
+            "id": "52b6e5ca-c705-4a2c-a887-f68e43bbc35f",
+            "actions": [
+                {
+                    "name": "RotateWrench",
+                    "type": "Button",
+                    "id": "9abd3a3f-39ac-4959-bdb4-079780977076",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "StartPinPush",
+                    "type": "Button",
+                    "id": "56d7b6ab-e7c5-460f-9384-7621dfebc7d1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ChangeTumbler",
+                    "type": "Value",
+                    "id": "d36760e2-284f-4049-8984-a1f59c3f1665",
+                    "expectedControlType": "Axis",
+                    "processors": "Normalize(min=-120,max=120)",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "PushPin",
+                    "type": "Value",
+                    "id": "20dde639-15f6-4bab-818c-06803e5e303a",
+                    "expectedControlType": "Axis",
+                    "processors": "Clamp(min=-100,max=100)",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "bb5a7e6e-5b78-4734-b4bd-61c07b43b9ae",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotateWrench",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e29f1023-3ab1-441b-ab33-a0d2e72aeffd",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "StartPinPush",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "63281f99-c9c7-499b-b4f5-65b4e9050954",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeTumbler",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1c4c85ac-9574-4cb6-b497-744e52c0e67f",
+                    "path": "<Mouse>/delta/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PushPin",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
