@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,31 +9,30 @@ namespace Lockpicking {
         [SerializeField]
         private List<VisualTest_Tumbler> tumblers;
 
-        //private List<PinStates> tumblersPinStates;
-        private int tumblersCount;
-        private int currentPin;
+        // Lock pin sequence
+        private int[] pinSequence;
+        private int currPosInSequence;
         private bool canBindAnotherPin;
 
-        /*
-         TODO:
-            Use tumbler.getstate() instead of tumblerPinState
-            
-         */
+        private int tumblersCount;
+        private int currentPin;
 
         private void Start() {
             // Initialize tumblers states
             tumblersCount = tumblers.Count;
             currentPin = 0;
             canBindAnotherPin = true;
+            currPosInSequence = -1;
 
-            //tumblersPinStates = new();
             foreach (VisualTest_Tumbler tumbler in tumblers) {
                 tumbler.SetActive(false);
                 tumbler.ReleasePin();
-                //tumblersPinStates.Add(PinStates.Free);
             }
 
             tumblers[currentPin].SetActive(true);
+
+            // Generate pin sequence
+            CreatePinSequence();
         }
 
         public void PinPushStart() {
@@ -45,9 +45,6 @@ namespace Lockpicking {
 
         public void PinPositionValueChange(float delta) {
             // If this pin is set, it cannot be moved anymore
-            /*if(tumblersPinStates[currentPin] == PinStates.Set) {
-                return;
-            }*/
             if (tumblers[currentPin].GetState() == PinStates.Set) {
                 return;
             }
@@ -59,7 +56,7 @@ namespace Lockpicking {
                     Debug.Log("!!! LOCK PICKED !!!");
                 } else {
                     canBindAnotherPin = true;
-                    BindRandomPin();
+                    BindNextPinInSequence();
                 }
             }
         }
@@ -75,11 +72,10 @@ namespace Lockpicking {
         public void TorqueWrenchPressure() {
             // Reset pin states
             for (int i = 0; i < tumblersCount; i++) {
-                //tumblersPinStates[i] = PinStates.Free;
                 tumblers[i].ResetPin();
             }
-            // Choose bound pin
-            BindRandomPin();
+            // Bind first pin
+            BindNextPinInSequence();
         }
 
         public void TorqueWrenchRelease() {
@@ -88,21 +84,13 @@ namespace Lockpicking {
                 tumbler.ResetPin();
             }
 
-            /*for (int i = 0; i < tumblersCount; i ++) {
-                tumblersPinStates[i] = PinStates.Free;
-            }*/
-
+            // Reset pin binding and pin sequence counter
             canBindAnotherPin = true;
+            currPosInSequence = -1;
         }
 
         private bool AreAllPinsSet() {
             bool allPinsAreSet = true;
-            /*foreach (PinStates pinState in tumblersPinStates) {
-                if (pinState != PinStates.Set) {
-                    allPinsAreSet = false;
-                    break;
-                }
-            }*/
             foreach (VisualTest_Tumbler tumbler in tumblers) {
                 if (tumbler.GetState() != PinStates.Set) {
                     allPinsAreSet = false;
@@ -112,33 +100,20 @@ namespace Lockpicking {
             return allPinsAreSet;
         }
 
-        private void BindRandomPin() {
-            int chosenBoundPinIndex;
-            List<int> freePinsIndexes = new();
+        private void BindNextPinInSequence() {
             // Check if there are no pins already bound
             if (!canBindAnotherPin) {
                 return;
             }
 
-            // Find all free pins
-            /*for (int i = 0; i < tumblersCount; i++) {
-                if (tumblersPinStates[i] == PinStates.Free) {
-                    freePinsIndexes.Add(i);
-                }
-            }*/
-            for (int i = 0; i < tumblersCount; i++) {
-                if (tumblers[i].GetState() == PinStates.Free) {
-                    freePinsIndexes.Add(i);
-                }
-            }
-            // If there are no more free pins
-            if (freePinsIndexes.Count == 0) {
+            // Check if there are any free pins left
+            currPosInSequence++;
+            if (currPosInSequence >= tumblers.Count) {
                 return;
             }
-            // Otherwise randomly choose one to bind
-            chosenBoundPinIndex = freePinsIndexes[UnityEngine.Random.Range(0, freePinsIndexes.Count)];
-            //tumblersPinStates[chosenBoundPinIndex] = PinStates.Bound;
-            tumblers[chosenBoundPinIndex].BindPin();
+
+            // Bind next pin in sequence
+            tumblers[pinSequence[currPosInSequence]].BindPin();
             canBindAnotherPin = false;
         }
 
@@ -155,6 +130,31 @@ namespace Lockpicking {
                 tumblers[currentPin].SetActive(false);
                 currentPin--;
                 tumblers[currentPin].SetActive(true);
+            }
+        }
+
+        /*
+         * Create a random sequence of binding the pins and store it 
+         * in pinSequence.
+         * Ex: 
+         *      tumblers.Count = 7     ->     seq = [6, 0, 5, 4, 2, 1, 3]
+         */
+        private void CreatePinSequence() {
+            List<int> auxPins = new();
+            int randIndex;
+            int j = 0;
+
+            pinSequence = new int[tumblers.Count];
+
+            for (int i = 0; i < tumblers.Count; i ++) {
+                auxPins.Add(i);
+            }
+
+            while (auxPins.Count > 0) {
+                randIndex = UnityEngine.Random.Range(0, auxPins.Count);
+                pinSequence[j] = auxPins[randIndex];
+                auxPins.RemoveAt(randIndex);
+                j++;
             }
         }
     }
