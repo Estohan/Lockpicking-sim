@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Lockpicking {
-    public class LockpickControls : MonoBehaviour {
+    public class VisualTest_LockpickinControls : MonoBehaviour {
 
         [SerializeField]
         private static InputManager inputManager;
 
         [SerializeField]
-        private LP_Lock _lock;
+        private VisualTest_Tumblers VT_Tumblers;
 
         private bool pinPushing;
 
@@ -37,12 +37,12 @@ namespace Lockpicking {
 
         private void RotateWrenchRotate() {
             Debug.Log("[Rotating wrench]");
-            _lock.TorqueWrenchPressure();
+            VT_Tumblers.TorqueWrenchPressure();
         }
 
         private void RotateWrenchStop() {
             Debug.Log("[Released wrench]");
-            _lock.TorqueWrenchRelease();
+            VT_Tumblers.TorqueWrenchRelease();
         }
 
         private void PinPushStarted() {
@@ -53,13 +53,13 @@ namespace Lockpicking {
         private void PinPushStopped() {
             pinPushing = false;
             Debug.Log("[Stopped pushing pin]");
-            _lock.PinPushStop();
+            VT_Tumblers.PinPushStop();
         }
 
         private void PinPushValue(float delta) {
             if (pinPushing) {
                 Debug.Log("[Pushed pin] : " + delta);
-                _lock.PinPositionValueChange(delta);
+                VT_Tumblers.PinPositionValueChange(delta);
             }
         }
 
@@ -69,7 +69,7 @@ namespace Lockpicking {
             } else {
                 Debug.Log("[Moved to previous tumbler]");
             }
-            _lock.ChangeTumbler(delta);
+            VT_Tumblers.ChangeTumbler(delta);
         }
 
         private void OnDisable() {

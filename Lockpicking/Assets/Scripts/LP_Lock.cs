@@ -4,35 +4,45 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Lockpicking {
-    public class VisualTest_Tumblers : MonoBehaviour {
+    public class LP_Lock : MonoBehaviour {
 
         [SerializeField]
-        private List<VisualTest_Tumbler> tumblers;
+        private int tumblersCount;
+        private List<LP_Tumbler> tumblers;
+
+        // [ TODO ] Add AnimatorController
 
         // Lock pin sequence
-        private int[] pinSequence;
-        private int currPosInSequence;
-        private bool canBindAnotherPin;
+        public int[] pinSequence; // change to private
+        public int currPosInSequence; // change to private
+        public  bool canBindAnotherPin; // change to private
 
-        private int tumblersCount;
-        private int currentPin;
+        public int currentPin; // change to private
 
         private void Start() {
+            tumblers = new();
+            for (int i = 0; i < tumblersCount; i ++) {
+                tumblers.Add(new LP_Tumbler());
+            }
+
             // Initialize tumblers states
-            tumblersCount = tumblers.Count;
             currentPin = 0;
             canBindAnotherPin = true;
             currPosInSequence = -1;
 
-            foreach (VisualTest_Tumbler tumbler in tumblers) {
-                tumbler.SetActive(false);
+            foreach (LP_Tumbler tumbler in tumblers) {
                 tumbler.ReleasePin();
             }
 
-            tumblers[currentPin].SetActive(true);
-
             // Generate pin sequence
             CreatePinSequence();
+
+            // Start minigame
+            StartLockpicking();
+        }
+
+        public void StartLockpicking() {
+            AudioManager.instance.PlayIntroAudio();
         }
 
         public void PinPushStart() {
@@ -64,8 +74,10 @@ namespace Lockpicking {
         public void ChangeTumbler(float direction) {
             if (direction > 0) {
                 NextTumbler();
+                AudioManager.instance.PlayTumblerChangeAudio();
             } else {
                 PreviousTumbler();
+                AudioManager.instance.PlayTumblerChangeAudio();
             }
         }
 
@@ -80,7 +92,7 @@ namespace Lockpicking {
 
         public void TorqueWrenchRelease() {
             // Reset all tumblers
-            foreach (VisualTest_Tumbler tumbler in tumblers) {
+            foreach (LP_Tumbler tumbler in tumblers) {
                 tumbler.ResetPin();
             }
 
@@ -91,7 +103,7 @@ namespace Lockpicking {
 
         private bool AreAllPinsSet() {
             bool allPinsAreSet = true;
-            foreach (VisualTest_Tumbler tumbler in tumblers) {
+            foreach (LP_Tumbler tumbler in tumblers) {
                 if (tumbler.GetState() != PinStates.Set) {
                     allPinsAreSet = false;
                     break;
@@ -108,7 +120,7 @@ namespace Lockpicking {
 
             // Check if there are any free pins left
             currPosInSequence++;
-            if (currPosInSequence >= tumblers.Count) {
+            if (currPosInSequence >= tumblersCount) {
                 return;
             }
 
@@ -119,17 +131,13 @@ namespace Lockpicking {
 
         private void NextTumbler() {
             if (currentPin + 1 < tumblersCount) {
-                tumblers[currentPin].SetActive(false);
                 currentPin++;
-                tumblers[currentPin].SetActive(true);
             }
         }
 
         private void PreviousTumbler() {
             if (currentPin - 1 > -1) {
-                tumblers[currentPin].SetActive(false);
                 currentPin--;
-                tumblers[currentPin].SetActive(true);
             }
         }
 
@@ -144,9 +152,9 @@ namespace Lockpicking {
             int randIndex;
             int j = 0;
 
-            pinSequence = new int[tumblers.Count];
+            pinSequence = new int[tumblersCount];
 
-            for (int i = 0; i < tumblers.Count; i ++) {
+            for (int i = 0; i < tumblersCount; i++) {
                 auxPins.Add(i);
             }
 
@@ -159,9 +167,9 @@ namespace Lockpicking {
         }
     }
 
-    /*public enum PinStates {
+    public enum PinStates {
         Free,
         Bound,
         Set
-    }*/
+    }
 }
