@@ -5,17 +5,18 @@ using UnityEngine;
 
 namespace Lockpicking {
     public class LP_Lock : MonoBehaviour {
-
+        [SerializeField]
+        private LP_Movement toolsMovement;
         [SerializeField]
         private int tumblersCount;
-        private List<LP_Tumbler> tumblers;
+        public List<LP_Tumbler> tumblers;
 
         // [ TODO ] Add AnimatorController
 
         // Lock pin sequence
-        public int[] pinSequence; // change to private
-        public int currPosInSequence; // change to private
-        public  bool canBindAnotherPin; // change to private
+        public int[] pinSequence; // [ DEBUG ] change to private
+        public int currPosInSequence; // [ DEBUG ] change to private
+        public  bool canBindAnotherPin; // [ DEBUG ] change to private
 
         public int currentPin; // change to private
 
@@ -88,6 +89,8 @@ namespace Lockpicking {
             }
             // Bind first pin
             BindNextPinInSequence();
+            // Wrench animation
+            toolsMovement.WrenchPressure();
         }
 
         public void TorqueWrenchRelease() {
@@ -99,6 +102,10 @@ namespace Lockpicking {
             // Reset pin binding and pin sequence counter
             canBindAnotherPin = true;
             currPosInSequence = -1;
+        }
+
+        public int GetTumblersCount() {
+            return tumblersCount;
         }
 
         private bool AreAllPinsSet() {

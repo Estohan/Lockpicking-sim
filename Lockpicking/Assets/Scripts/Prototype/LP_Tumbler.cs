@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 
 namespace Lockpicking {
+    [System.Serializable] // [ DEBUG ]
     public class LP_Tumbler {
 
         // Internal data

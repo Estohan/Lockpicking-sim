@@ -15,8 +15,25 @@ MonoBehaviour:
   intro:
   - {fileID: 8300000, guid: 71abe49f1410be54f80a33f5bbe1e95f, type: 3}
   - {fileID: 8300000, guid: c7c44109825528045bac8b32babc2df2, type: 3}
+  unlock:
+  - {fileID: 8300000, guid: 71bd10a4c858d064da8ee5d0d129ae69, type: 3}
+  - {fileID: 8300000, guid: d409f5e9eba04724abb08f467678d673, type: 3}
   tumblerChange:
   - {fileID: 8300000, guid: 0537c4554fbb25e4aabc808d0959ba23, type: 3}
   - {fileID: 8300000, guid: 3e5e1775d27b87f41be6e28c7b9bf15d, type: 3}
   - {fileID: 8300000, guid: 2dd5a9c394a16c849b370a88bd9a3e66, type: 3}
   - {fileID: 8300000, guid: 63a7a03c771b26d4b8a2461202dadaa8, type: 3}
+  pinMove:
+  - {fileID: 8300000, guid: c475c233d67a7fd40ac8933bf6c79cdf, type: 3}
+  - {fileID: 8300000, guid: 476e540328ecc1141a304a10e3837588, type: 3}
+  - {fileID: 8300000, guid: 5699d62af470ce5429e6770b22dbb3a3, type: 3}
+  - {fileID: 8300000, guid: b1a209343eeb19542843edbd47ee3514, type: 3}
+  - {fileID: 8300000, guid: 67272e940911c5e43a038cdc03efe57b, type: 3}
+  pinReset:
+  - {fileID: 8300000, guid: e9b53c2e28a77d14d8bb16e8c015e334, type: 3}
+  pinSet:
+  - {fileID: 8300000, guid: aa4901db9883172488369b86d1dcfcef, type: 3}
+  wrenchPressure:
+  - {fileID: 8300000, guid: 6bc617f454f8ad248a7b335545618547, type: 3}
+  wrenchRelease:
+  - {fileID: 8300000, guid: e4f65234d7dbb5541ae44e6c05e907bd, type: 3}

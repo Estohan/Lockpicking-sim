@@ -505,6 +505,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1096503352}
   - component: {fileID: 1096503351}
+  - component: {fileID: 1096503353}
   m_Layer: 0
   m_Name: Lock
   m_TagString: Untagged
@@ -524,7 +525,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e83c5b45c648a34ebf10519f688b4d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  toolsMovement: {fileID: 1096503353}
   tumblersCount: 10
+  tumblers: []
   pinSequence: 
   currPosInSequence: 0
   canBindAnotherPin: 0
@@ -547,6 +550,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1096503353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1096503350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5930dcc33b39074cabdf5a2d85bfc77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _wrench: {fileID: 955436756}
+  _pick: {fileID: 1300272211}
+  _lock: {fileID: 1096503351}
+  lockLength: 1
+  pickAngle: 30
+  wrenchAngle: 190
+  wrenchSpeed: 0
 --- !u!1001 &1300272210
 PrefabInstance:
   m_ObjectHideFlags: 0
