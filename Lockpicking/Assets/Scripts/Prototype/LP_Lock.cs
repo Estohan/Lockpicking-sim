@@ -5,20 +5,22 @@ using UnityEngine;
 
 namespace Lockpicking {
     public class LP_Lock : MonoBehaviour {
-        [SerializeField]
-        private LP_Movement toolsMovement;
+        private LP_Animation toolsAnimation;
+
         [SerializeField]
         private int tumblersCount;
+
         public List<LP_Tumbler> tumblers;
-
-        // [ TODO ] Add AnimatorController
-
         // Lock pin sequence
         public int[] pinSequence; // [ DEBUG ] change to private
         public int currPosInSequence; // [ DEBUG ] change to private
         public  bool canBindAnotherPin; // [ DEBUG ] change to private
 
         public int currentPin; // change to private
+
+        private void Awake() {
+            toolsAnimation = this.gameObject.GetComponent<LP_Animation>();
+        }
 
         private void Start() {
             tumblers = new();
@@ -43,7 +45,8 @@ namespace Lockpicking {
         }
 
         public void StartLockpicking() {
-            AudioManager.instance.PlayIntroAudio();
+            // AudioManager.instance.PlayIntroAudio();
+            toolsAnimation.LockpickingIntro();
         }
 
         public void PinPushStart() {
@@ -80,6 +83,7 @@ namespace Lockpicking {
                 PreviousTumbler();
                 AudioManager.instance.PlayTumblerChangeAudio();
             }
+            toolsAnimation.ChangeTumbler(direction);
         }
 
         public void TorqueWrenchPressure() {
@@ -90,7 +94,7 @@ namespace Lockpicking {
             // Bind first pin
             BindNextPinInSequence();
             // Wrench animation
-            toolsMovement.WrenchPressure();
+            toolsAnimation.WrenchPressure();
         }
 
         public void TorqueWrenchRelease() {
@@ -102,6 +106,8 @@ namespace Lockpicking {
             // Reset pin binding and pin sequence counter
             canBindAnotherPin = true;
             currPosInSequence = -1;
+            // Wrench animation
+            toolsAnimation.WrenchRelease();
         }
 
         public int GetTumblersCount() {

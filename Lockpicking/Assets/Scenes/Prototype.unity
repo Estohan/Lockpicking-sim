@@ -425,11 +425,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b13b92e3358cdd24c85b701f2c909a07, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.0056
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b13b92e3358cdd24c85b701f2c909a07, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.0141
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b13b92e3358cdd24c85b701f2c909a07, type: 3}
       propertyPath: m_LocalRotation.w
@@ -525,7 +525,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e83c5b45c648a34ebf10519f688b4d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toolsMovement: {fileID: 1096503353}
   tumblersCount: 10
   tumblers: []
   pinSequence: 
@@ -565,10 +564,10 @@ MonoBehaviour:
   _wrench: {fileID: 955436756}
   _pick: {fileID: 1300272211}
   _lock: {fileID: 1096503351}
-  lockLength: 1
+  lockLength: 0.04
   pickAngle: 30
-  wrenchAngle: 190
-  wrenchSpeed: 0
+  pickSpeed: 1
+  movementError: 0.001
 --- !u!1001 &1300272210
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -582,15 +581,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e36ed9903c0e0d547b42aae13867f65d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.0009
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e36ed9903c0e0d547b42aae13867f65d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.0091
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e36ed9903c0e0d547b42aae13867f65d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.0207
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e36ed9903c0e0d547b42aae13867f65d, type: 3}
       propertyPath: m_LocalRotation.w
