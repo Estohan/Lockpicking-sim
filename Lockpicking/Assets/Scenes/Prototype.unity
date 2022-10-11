@@ -566,7 +566,7 @@ MonoBehaviour:
   _lock: {fileID: 1096503351}
   lockLength: 0.04
   pickAngle: 30
-  pickSpeed: 1
+  pickSpeed: 10
   movementError: 0.001
 --- !u!1001 &1300272210
 PrefabInstance:

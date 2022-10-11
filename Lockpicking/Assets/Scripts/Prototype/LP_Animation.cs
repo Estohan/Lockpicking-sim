@@ -83,9 +83,12 @@ namespace Lockpicking {
             // disable pick animator so that its transform values could
             // be modified through code
             pickAnimator.enabled = false;
-            if (direction > 0) {
+            if (direction < 0 &&
+                currPickPos.z + tumblerChangeStep <= origPickPos.z) {
                 currPickPos.z += tumblerChangeStep;
-            } else {
+            }
+            if (direction > 0 && 
+                currPickPos.z - tumblerChangeStep >= origPickPos.z - lockLength){
                 currPickPos.z -= tumblerChangeStep;
             }
 
@@ -103,26 +106,43 @@ namespace Lockpicking {
         }*/
 
         IEnumerator ChangeTumblerCoroutine() {
-            float movementStep = tumblerChangeStep / (pickSpeed * 100); // distance / ms
-            //Debug.Log("[ Angle offset: " + wrenchAngleOffset + ", Final angle: " + finalAngle + " ");
-            //Debug.Log("Original rot: " + origWrenchRot.eulerAngles + " ]");
+            float movementStep = tumblerChangeStep * pickSpeed * 100;
             Vector3 newPos = _pick.transform.localPosition;
 
             pickIsMoving = true;
             Debug.Log("Orig pos: " + origPickPos);
+            Debug.Log("Tum. step: " + tumblerChangeStep);
 
-            while (_pick.transform.localPosition.z > currPickPos.z + movementError || 
-                    _pick.transform.localPosition.z < currPickPos.z - movementError) {
-                // Debug.Log("Current rot: " + currWrenchRot.eulerAngles);
-                Debug.Log("newPos: " + newPos + ", currentPos: " + currPickPos);
-                if (_pick.transform.localPosition.z > currPickPos.z + movementError) {
+            while (_pick.transform.localPosition.z < currPickPos.z || 
+                    _pick.transform.localPosition.z > currPickPos.z) {
+
+                //Debug.Log("newPos: " + newPos + ", currentPos: " + currPickPos);
+
+                if (_pick.transform.localPosition.z < currPickPos.z) {
+                    // Prevent jumping over the current position
+                    if (newPos.z + movementStep * Time.deltaTime > currPickPos.z) {
+                        newPos.z = currPickPos.z;
+                    }
                     newPos.z += tumblerChangeStep * Time.deltaTime;
                 }
-                if (_pick.transform.localPosition.z < currPickPos.z - movementError) {
-                    newPos.z -= tumblerChangeStep + Time.deltaTime;
+
+                if (_pick.transform.localPosition.z > currPickPos.z) {
+                    // Prevent jumping over the current position
+                    if (newPos.z - movementStep * Time.deltaTime < currPickPos.z) {
+                        newPos.z = currPickPos.z;
+                    }
+                    newPos.z -= tumblerChangeStep * Time.deltaTime;
                 }
 
                 _pick.transform.localPosition = newPos;
+
+                // Exit coroutine when reaching current position
+                // Debug.Log(_pick.transform.localPosition.z + " " + (currPickPos.z - movementError) + " " + (currPickPos.z + movementError));
+                if (_pick.transform.localPosition.z > currPickPos.z - movementError && 
+                    _pick.transform.localPosition.z < currPickPos.z + movementError) {
+                    break;
+                }
+
                 yield return endOfFrame;
             }
 
