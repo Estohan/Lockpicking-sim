@@ -544,7 +544,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 955436758}
-  - {fileID: 1300272213}
+  - {fileID: 1824268992}
   - {fileID: 296894119}
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -565,19 +565,20 @@ MonoBehaviour:
   _pick: {fileID: 1300272211}
   _lock: {fileID: 1096503351}
   lockLength: 0.04
-  pickAngle: 30
-  pickSpeed: 10
+  pickAngle: 25
+  pickSpeed: 0.05
+  resetPickStep: 1
   movementError: 0.001
 --- !u!1001 &1300272210
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 1096503352}
+    m_TransformParent: {fileID: 1824268992}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: e36ed9903c0e0d547b42aae13867f65d, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e36ed9903c0e0d547b42aae13867f65d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -655,6 +656,59 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e36ed9903c0e0d547b42aae13867f65d, type: 3}
   m_PrefabInstance: {fileID: 1300272210}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1824268991
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1824268992}
+  - component: {fileID: 1824268993}
+  m_Layer: 0
+  m_Name: PickParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1824268992
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1824268991}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1300272213}
+  m_Father: {fileID: 1096503352}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1824268993
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1824268991}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2fc7c4434a8362845a3f64c16260ee3f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &2045019502
 GameObject:
   m_ObjectHideFlags: 0

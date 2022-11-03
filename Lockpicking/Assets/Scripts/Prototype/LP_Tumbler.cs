@@ -8,8 +8,8 @@ namespace Lockpicking {
     public class LP_Tumbler {
 
         // Internal data
-        private float positionValue;
-        private float currentValue;
+        public float positionValue;
+        public float currentValue;
         private PinStates pinState;
 
         // Other settings
@@ -78,6 +78,10 @@ namespace Lockpicking {
 
         public PinStates GetState() {
             return pinState;
+        }
+
+        public float GetPinValue() {
+            return currentValue;
         }
     }
 }

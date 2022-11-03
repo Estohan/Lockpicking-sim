@@ -55,6 +55,7 @@ namespace Lockpicking {
 
         public void PinPushStop() {
             tumblers[currentPin].ReleasePin();
+            toolsAnimation.PushPinStop(tumblers[currentPin].GetPinValue());
         }
 
         public void PinPositionValueChange(float delta) {
@@ -64,6 +65,7 @@ namespace Lockpicking {
             }
             // Move pin
             tumblers[currentPin].MovePin(delta);
+            toolsAnimation.PushPin(tumblers[currentPin].GetPinValue());
             // If pin is set then bind another pin or rotate lock core
             if (tumblers[currentPin].isSet()) {
                 if (AreAllPinsSet()) {

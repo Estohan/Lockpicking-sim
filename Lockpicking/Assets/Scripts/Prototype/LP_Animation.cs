@@ -20,10 +20,12 @@ namespace Lockpicking {
         [SerializeField]
         private float pickSpeed;
         [SerializeField]
+        private float resetPickStep;
+        [SerializeField]
         private float movementError;
 
         private Vector3 origPickPos;
-        private Quaternion origPickRot;
+        private Vector3 origPickRot;
         private Vector3 currPickPos;
         private Quaternion currPickRot;
         // distance between two tumblers
@@ -51,9 +53,8 @@ namespace Lockpicking {
 
         private void Start() {
             origPickPos = _pick.transform.localPosition;
-            origPickRot = _pick.transform.localRotation;
+            origPickRot = _pick.transform.localRotation.eulerAngles;
             currPickPos = origPickPos;
-            currPickRot = origPickRot;
 
             pickIsMoving = false;
 
@@ -83,65 +84,85 @@ namespace Lockpicking {
             // disable pick animator so that its transform values could
             // be modified through code
             pickAnimator.enabled = false;
-            if (direction < 0 &&
+            if (direction < 0 && // direction and threshold check
                 currPickPos.z + tumblerChangeStep <= origPickPos.z) {
                 currPickPos.z += tumblerChangeStep;
             }
-            if (direction > 0 && 
+            if (direction > 0 && // direction and threshold check
                 currPickPos.z - tumblerChangeStep >= origPickPos.z - lockLength){
                 currPickPos.z -= tumblerChangeStep;
             }
 
             if (!pickIsMoving) {
-                StartCoroutine(ChangeTumblerCoroutine());
+                StartCoroutine(MovePickCoroutine());
             } 
         }
 
-        /*IEnumerator RotatePickCoroutine() {
+        // position >= 0f && position <= 100f
+        public void PushPin(float position) {
+            pickAnimator.enabled = false;
+            StopCoroutine(PickResetCoroutine(position));
+            currPickRot = Quaternion.Euler(origPickRot.x + (pickAngle / 100f) * position,
+                                            origPickRot.y,
+                                            origPickRot.z);
+            // Debug.Log(currPickRot.eulerAngles.x);
+            _pick.transform.rotation = currPickRot;
+        }
 
+        public void PushPinStop(float position) {
+            pickAnimator.enabled = false;
+            StartCoroutine(PickResetCoroutine(position));
+        }
+
+        IEnumerator PickResetCoroutine(float position) {
+            Debug.Log("Started PickResetCoroutine.");
+            while (!currPickRot.Equals(origPickRot)) {
+                position += resetPickStep;
+                currPickRot = Quaternion.Euler(origPickRot.x + (pickAngle / 100f) * position,
+                                            origPickRot.y,
+                                            origPickRot.z);
+                _pick.transform.rotation = currPickRot;
+                yield return endOfFrame;
+            }
         }
 
         IEnumerator MovePickCoroutine() {
-
-        }*/
-
-        IEnumerator ChangeTumblerCoroutine() {
-            float movementStep = tumblerChangeStep * pickSpeed * 100;
             Vector3 newPos = _pick.transform.localPosition;
+            float movementStep;
 
             pickIsMoving = true;
-            Debug.Log("Orig pos: " + origPickPos);
-            Debug.Log("Tum. step: " + tumblerChangeStep);
 
-            while (_pick.transform.localPosition.z < currPickPos.z || 
-                    _pick.transform.localPosition.z > currPickPos.z) {
+            while (true) {
+                movementStep = pickSpeed * Time.deltaTime;
 
-                //Debug.Log("newPos: " + newPos + ", currentPos: " + currPickPos);
-
-                if (_pick.transform.localPosition.z < currPickPos.z) {
-                    // Prevent jumping over the current position
-                    if (newPos.z + movementStep * Time.deltaTime > currPickPos.z) {
-                        newPos.z = currPickPos.z;
-                    }
-                    newPos.z += tumblerChangeStep * Time.deltaTime;
+                // exit loop conditions
+                if (_pick.transform.localPosition.z > currPickPos.z &&
+                    _pick.transform.localPosition.z - movementStep < currPickPos.z + movementError) {
+                    // close enough to reach current position
+                    _pick.transform.localPosition = currPickPos;
+                    break;
                 }
 
+                if (_pick.transform.localPosition.z < currPickPos.z &&
+                    _pick.transform.localPosition.z + movementStep > currPickPos.z - movementError) {
+                    // close enough to reach current position
+                    _pick.transform.localPosition = currPickPos;
+                    break;
+                }
+
+                // move outward
+                if (_pick.transform.localPosition.z < currPickPos.z) {
+                    newPos.z += movementStep;
+                    // Debug.Log("+");
+                }
+
+                // move inward
                 if (_pick.transform.localPosition.z > currPickPos.z) {
-                    // Prevent jumping over the current position
-                    if (newPos.z - movementStep * Time.deltaTime < currPickPos.z) {
-                        newPos.z = currPickPos.z;
-                    }
-                    newPos.z -= tumblerChangeStep * Time.deltaTime;
+                    newPos.z -= movementStep;
+                    // Debug.Log("-");
                 }
 
                 _pick.transform.localPosition = newPos;
-
-                // Exit coroutine when reaching current position
-                // Debug.Log(_pick.transform.localPosition.z + " " + (currPickPos.z - movementError) + " " + (currPickPos.z + movementError));
-                if (_pick.transform.localPosition.z > currPickPos.z - movementError && 
-                    _pick.transform.localPosition.z < currPickPos.z + movementError) {
-                    break;
-                }
 
                 yield return endOfFrame;
             }

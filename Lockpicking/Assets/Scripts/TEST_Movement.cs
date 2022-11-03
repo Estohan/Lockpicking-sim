@@ -45,24 +45,34 @@ public class TEST_Movement : MonoBehaviour {
         moving = true;
 
         while (true) {
-            stepDist = moveStep * moveSpeed * Time.deltaTime;
-            Debug.Log(stepDist + " " + Time.deltaTime);
+            stepDist = moveSpeed * Time.deltaTime;
+            Debug.Log("CurrentPos: " + currentPos + ", StepDist: " + stepDist + ", LocalPos: " + 
+                        this.transform.localPosition.x);
             // exit loop
-            if (this.transform.localPosition.x + stepDist > currentPos.x - moveError ||
+            if (this.transform.localPosition.x > currentPos.x &&
                 this.transform.localPosition.x - stepDist < currentPos.x + moveError) {
+                // Debug.Log(this.transform.localPosition.x + " +/- " + stepDist + " vs. " + currentPos.x);
                 this.transform.localPosition = currentPos;
-                Debug.Log(".");
+                Debug.Log(". (<)");
                 break;
+            }
+
+            if (this.transform.localPosition.x < currentPos.x &&
+                this.transform.localPosition.x + stepDist > currentPos.x - moveError) {
+                this.transform.localPosition = currentPos;
+                Debug.Log(". (>)");
+                break;
+            }
+
+
+            // move to right
+            if (this.transform.localPosition.x < currentPos.x) {
+                newPos.x += stepDist;
+                Debug.Log("+");
+            // move to left
             } else {
-                // move to right
-                if (this.transform.localPosition.x < currentPos.x) {
-                    newPos.x += stepDist;
-                    Debug.Log("+");
-                // move to left
-                } else {
-                    newPos.x -= stepDist;
-                    Debug.Log("-");
-                }
+                newPos.x -= stepDist;
+                Debug.Log("-");
             }
             this.transform.localPosition = newPos; // * Time.deltaTime
             yield return frameEnd;
